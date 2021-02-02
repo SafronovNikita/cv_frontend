@@ -6,17 +6,20 @@
       <router-view></router-view>
     </div>
 
+    <download_line></download_line>
     <footer_line></footer_line>
   </div>
 </template>
 
 <script>
   import header_line from "./header";
+  import download_line from "./download_line";
   import footer_line from "./footer";
 
   export default {
     components:{
       header_line,
+      download_line,
       footer_line,
     },
     data(){

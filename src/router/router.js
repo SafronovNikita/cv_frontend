@@ -4,6 +4,7 @@ import Router from 'vue-router'
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //import page_frame from '@/components/page_frame'
 const page_frame = () => import('@/components/page_frame/page_frame')
+const download_frame = () => import('@/components/download_frame/download_frame')
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 const home = () => import('@/components/home/home')
@@ -29,8 +30,13 @@ export default new Router({
           name:'home',
           path:':lang',
           component:home,
-        }
+        },
       ]
     },
+    {
+      name:'download',
+      path:'/download/:lang',
+      component:download_frame
+    }
   ]
 })

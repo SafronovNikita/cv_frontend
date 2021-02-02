@@ -1,71 +1,39 @@
 <template>
   <div>
+    <hr class="gradient">
 
     <div class="header-line">
       <div
         class="buttons-wrapper"
         :class="{narrow:!is_screen_big}"
       >
-        <div class="ui teal basic label item">
-          {{lang === LANGUAGES.RU ? 'Мои контакты:' : 'Contact me:'}}
+        <div class="ui orange basic label item">
+          {{lang === LANGUAGES.RU ? 'Скачать резюме:' : 'Download CV:'}}
         </div>
         <a
-          class="ui teal button item"
-          :href=" 'tel:' + cv_data.phone "
-        >
-          <i class="ui phone icon"></i>
-        </a>
-        <a
-          class="ui teal button item"
-          :href=" 'mailto:' + cv_data.email "
+          class="ui orange button item"
+          :href="download_path_by_lang('en')"
           target="_blank"
         >
-          <i class="ui envelope icon"></i>
+          PDF EN
         </a>
         <a
-          class="ui teal button item"
-          href="https://vk.com/safic2"
+          class="ui orange button item"
+          :href="download_path_by_lang('ru')"
           target="_blank"
         >
-          <i class="ui vk icon"></i>
+          PDF RU
         </a>
-        <a
-          class="ui teal button item"
-          href="https://github.com/SafronovNikita"
-          target="_blank"
-        >
-          <i class="ui github icon"></i>
-        </a>
-      </div>
-
-      <div></div>
-
-      <div class="ui buttons">
         <div
-          class="ui left attached teal button"
-          :class="{
-            active: $route.params.lang === $store.state.LANGUAGES.RU,
-            basic: $route.params.lang !== $store.state.LANGUAGES.RU
-          }"
-          @click="$router.push({params:{lang:'ru'}})"
+          class="ui orange button item"
+          @click="download_json()"
         >
-          RU
-        </div>
-        <div
-          class="ui right attached teal button"
-          :class="{
-            active: $route.params.lang === $store.state.LANGUAGES.EN,
-            basic: $route.params.lang !== $store.state.LANGUAGES.EN
-          }"
-          @click="$router.push({params:{lang:'en'}})"
-        >
-          EN
+          JSON
         </div>
       </div>
 
     </div>
 
-    <hr class="gradient">
   </div>
 </template>
 
@@ -87,7 +55,29 @@
       lang(){
         return this.$route.params.lang
       },
-    }
+    },
+    methods:{
+      download_path_by_lang(lang){
+        var target_route = this.$router.resolve({name:'download', params:{lang:lang}} )
+
+        return window.location.origin + target_route.href
+      },
+      download_json() {
+        var element = document.createElement('a');
+        element.setAttribute(
+          'href',
+          'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.cv_data))
+        );
+        element.setAttribute('download', 'nikita_safronov_cv.json');
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+      },
+    },
   }
 </script>
 
@@ -101,7 +91,7 @@
 
     max-width: var(--desktop-width);
     margin: auto;
-    padding: 15px 0 10px;
+    padding: 10px 0 15px;
 
     line-height: 40px;
 
@@ -142,7 +132,7 @@
   hr.gradient {
     border: 0;
     height: 2px;
-    background-image: linear-gradient(to right, #f0f0f0, var(--teal), #f0f0f0);
+    background-image: linear-gradient(to right, #f0f0f0, #f0f0f0, var(--orange), #f0f0f0, #f0f0f0);
   }
 
 </style>

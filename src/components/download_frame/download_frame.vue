@@ -1,6 +1,6 @@
 <template>
   <div class="download-wrapper">
-    <cv_body></cv_body>
+    <cv_body :is_for_print="true"></cv_body>
   </div>
 </template>
 

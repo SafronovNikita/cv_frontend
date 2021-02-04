@@ -22,6 +22,10 @@
   --blue-light: #D9E5F0;
   --orange: #F2711C;
   --grey: #888;
+
+  --link-color:#0000EE;
+  --link-hover-color:#609;
+  /*--link-hover-color:#551A8B;*/
 }
 
 body{

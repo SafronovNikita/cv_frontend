@@ -14,6 +14,7 @@
           class="ui orange button item"
           :href="download_path_by_lang('en')"
           target="_blank"
+          rel="noopener"
         >
           PDF EN
         </a>
@@ -21,6 +22,7 @@
           class="ui orange button item"
           :href="download_path_by_lang('ru')"
           target="_blank"
+          rel="noopener"
         >
           PDF RU
         </a>
@@ -132,7 +134,7 @@
   hr.gradient {
     border: 0;
     height: 2px;
-    background-image: linear-gradient(to right, #f0f0f0, #f0f0f0, var(--orange), #f0f0f0, #f0f0f0);
+    background-image: linear-gradient(to right, #f0f0f0, var(--orange), #f0f0f0);
   }
 
 </style>

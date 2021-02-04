@@ -19,6 +19,7 @@
           class="ui teal button item"
           :href=" 'mailto:' + cv_data.email "
           target="_blank"
+          rel="noopener"
         >
           <i class="ui envelope icon"></i>
         </a>
@@ -26,6 +27,7 @@
           class="ui teal button item"
           href="https://vk.com/safic2"
           target="_blank"
+          rel="noopener"
         >
           <i class="ui vk icon"></i>
         </a>
@@ -33,6 +35,7 @@
           class="ui teal button item"
           href="https://github.com/SafronovNikita"
           target="_blank"
+          rel="noopener"
         >
           <i class="ui github icon"></i>
         </a>
@@ -40,7 +43,7 @@
 
       <div></div>
 
-      <div class="ui buttons">
+      <div class="ui buttons" style="margin: 5px;">
         <div
           class="ui left attached teal button"
           :class="{
@@ -97,7 +100,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: center;
+    align-items: start;
 
     max-width: var(--desktop-width);
     margin: auto;

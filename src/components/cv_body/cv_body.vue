@@ -1,5 +1,5 @@
 <template>
-  <div class="main-wrapper">
+  <div class="main-wrapper" :class="{for_print:is_for_print}">
 
     <div class="column left">
 
@@ -81,9 +81,16 @@
       <div class="header">{{lang === LANGUAGES.RU ? 'Достижения' : 'HONORS AND AWARDS'}}</div>
 
       <table class="ui unstackable table">
-        <tr v-for="row in make_achievements_rows">
-          <td :class="row.classes" :rowspan="row.rowspan">
-            {{row.value}}
+        <tr v-for="row in achievements_rows">
+          <td
+            v-for="cell in row"
+            :class="cell.classes"
+            :rowspan="cell.rowspan"
+          >
+            {{cell.value}}
+            <div v-if="cell.hasOwnProperty('value2')" class="caption">
+              {{cell.value2}}
+            </div>
           </td>
         </tr>
       </table>
@@ -146,6 +153,7 @@
             <div class="subcaption">
               {{place[lang].position}}
             </div>
+
             <div class="ui bulleted list">
               <div
                 v-for="fact in place[lang].facts"
@@ -153,7 +161,16 @@
               >
                 {{fact}}
               </div>
+
+              <resources_widget
+                class="item"
+                v-if="place[lang].hasOwnProperty('resources') && place[lang].resources.length > 0"
+                :resources="place[lang].resources"
+              >
+              </resources_widget>
+
             </div>
+
           </td>
           <td class="dates">
             {{place[lang].period}}
@@ -181,6 +198,13 @@
               >
                 {{fact}}
               </div>
+
+              <resources_widget
+                class="item"
+                v-if="place[lang].hasOwnProperty('resources') && place[lang].resources.length > 0"
+                :resources="place[lang].resources"
+              >
+              </resources_widget>
             </div>
           </td>
           <td class="dates">
@@ -199,9 +223,6 @@
             <div class="caption">
               {{place[lang].name}}
             </div>
-            <a class="subcaption" :href="place.invariant.link" target="_blank">
-              Ссылка на профиль
-            </a>
             <div class="ui bulleted list">
               <div
                 v-for="fact in place[lang].facts"
@@ -209,6 +230,13 @@
               >
                 {{fact}}
               </div>
+
+              <resources_widget
+                class="item"
+                v-if="place[lang].hasOwnProperty('resources') && place[lang].resources.length > 0"
+                :resources="place[lang].resources"
+              >
+              </resources_widget>
             </div>
           </td>
           <td class="dates">
@@ -224,8 +252,18 @@
 
 <script>
   import cv_data from './cv_data.js'
+  import resources_widget from "./resources_widget";
 
   export default {
+    components:{
+      resources_widget,
+    },
+    props:{
+      is_for_print:{
+        type:Boolean,
+        default:false,
+      }
+    },
     data(){
       return {
         cv_data:cv_data,
@@ -238,7 +276,7 @@
         return this.$route.params.lang
       },
 
-      make_achievements_rows(){
+      achievements_rows(){
         var achievements = this.cv_data.achievements
 
         var rows = []
@@ -247,20 +285,25 @@
           var achievement = achievements[i]
           var events = achievement[this.lang].events
 
-          rows.push({
-            rowspan:events.length+1,
-            classes:{caption:true},
-            value:achievement.invariant.year
-          })
+          rows.push([
+            {
+              rowspan:events.length+1,
+              classes:{caption:true},
+              value:achievement.invariant.year
+            }
+          ])
 
           for (var j = 0; j < events.length; j++){
             var event = events[j]
 
-            rows.push({
-              rowspan:1,
-              classes:{},
-              value:event
-            })
+            rows.push([
+              {
+                rowspan:1,
+                classes:{},
+                value:event.name,
+                value2:event.place,
+              },
+            ])
           }
         }
         return rows
@@ -280,6 +323,10 @@
 
     font-size: 15px;
   }
+  .main-wrapper.for_print{
+    font-size: 13px;
+    padding: 0;
+  }
 
   .column{
     display: flex;
@@ -296,6 +343,25 @@
   .column.right{
     width: 650px;
   }
+
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  .name{
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .image-wrapper{
+    padding: 5px 20px;
+  }
+
+  .contacts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-weight: bold;
+  }
+
   /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
   .header{
     width: 100%;
@@ -358,25 +424,6 @@
 
   .subskill-list .item{
     margin: 0 5px 0;
-  }
-
-  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-  .name{
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .image-wrapper{
-    padding: 5px 20px;
-  }
-
-  .contacts{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    font-weight: bold;
   }
 
 </style>
